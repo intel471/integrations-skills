@@ -1,0 +1,12 @@
+{
+  "name": "integrations-skills",
+  "displayName": "Intel 471 Integration Skills",
+  "description": "Patterns and gotchas for building integrations against the Intel 471 Titan & Verity471 APIs — pagination, cursors, auth, rate limits, filtering, and scheduled-connector architecture.",
+  "author": {
+    "name": "Intel 471"
+  },
+  "homepage": "https://github.com/intel471/integrations-skills",
+  "repository": "https://github.com/intel471/integrations-skills",
+  "license": "Apache-2.0",
+  "keywords": ["intel471", "titan", "verity471", "api", "pagination", "integrations", "siem", "threat-intelligence"]
+}

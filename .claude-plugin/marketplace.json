@@ -1,0 +1,15 @@
+{
+  "name": "intel471",
+  "owner": {
+    "name": "Intel 471",
+    "url": "https://intel471.com"
+  },
+  "description": "Intel 471 skills for coding agents — patterns for building integrations against the Titan & Verity471 APIs.",
+  "plugins": [
+    {
+      "name": "integrations-skills",
+      "source": "./",
+      "description": "Patterns and gotchas for building integrations against the Intel 471 Titan & Verity471 APIs (pagination, auth, rate limits, filtering, scheduled connectors)."
+    }
+  ]
+}
