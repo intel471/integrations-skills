@@ -23,8 +23,12 @@ verity471.IndicatorsApi(api_client).get_indicators_stream(var_from=1627776000000
 ```
 
 ## Traps
-- **Milliseconds, not seconds**, on every Verity surface. A seconds value (10 digits) lands in
-  1970 and returns nothing.
+- **Milliseconds, not seconds**, on every Verity surface. A seconds value (10 digits) is
+  interpreted as milliseconds and **lands in January 1970**. What that does depends on which
+  parameter you got wrong, and neither case raises an error:
+  - as `var_from` (inclusive lower bound) → the window starts in 1970, so you get **everything**
+    in the stream. On a connector's first run this silently backfills the entire history.
+  - as `until` (exclusive upper bound) → the window ends in 1970, so you get **nothing**.
 - **Verity search API: hyphenated ISO dates silently return 0 results.** In the search query
   syntax `2023-01-01` is parsed with `-` as an operator, so the query means something other
   than the date you intended. Use epoch-ms (or a bare year) instead.

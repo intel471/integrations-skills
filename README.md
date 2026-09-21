@@ -18,8 +18,8 @@ Copilot, Gemini CLI, Windsurf, and anything else that reads files.
 Both Intel 471 backends have failure modes that produce **no error** — just wrong results you
 won't notice for a week:
 
-- A 10-digit (seconds) timestamp instead of 13-digit (milliseconds) returns **zero records**,
-  silently.
+- A 10-digit (seconds) timestamp instead of 13-digit (milliseconds) silently lands in 1970 —
+  pulling **your entire history** on a lower bound, or **zero records** on an upper bound.
 - Advancing the `from` filter each cycle on top of a cursor **skips or duplicates** objects.
 - Setting `until` on a stream makes a continuous connector **go permanently quiet** after its
   first drain.
@@ -116,8 +116,8 @@ mkdir -p .cursor/rules
 cp /tmp/i471-skills/.cursor/rules/*.mdc .cursor/rules/
 ```
 
-The rules point at the skill files, so vendor `skills/` too (see above) or edit the links to
-reference this repo on GitHub.
+These link to the skills on GitHub, so they work as-is — no vendoring required. If you'd
+rather your agent read local copies, vendor `skills/` as above and repoint the links.
 
 ### GitHub Copilot
 
@@ -134,6 +134,11 @@ cp /tmp/i471-skills/.github/instructions/*.md .github/instructions/
 
 [`GEMINI.md`](GEMINI.md) and [`.windsurf/rules/`](.windsurf/rules) are generated for the same
 purpose — copy whichever your tool reads.
+
+> **All the generated adapters link to the skills on GitHub**, not to relative paths, so you
+> can drop any of them into any repository and the links resolve. Vendoring `skills/` locally
+> is optional — do it if you want your agent reading local files, or if you need to pin the
+> content rather than track `main`.
 
 > **One caveat, stated plainly:** rule files like `.cursor/rules` and
 > `.github/copilot-instructions.md` apply to an agent working **inside the repo that contains

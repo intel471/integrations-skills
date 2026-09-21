@@ -16,10 +16,24 @@ resp = titan_client.IndicatorsApi(api_client).indicators_stream_get(last_updated
 # final page: resp.cursor_next -> "MTY1NT3", resp.indicators -> None
 ```
 
-> **`cursorNext` vs `cursor_next`.** The raw JSON field is camelCase **`cursorNext`** (Titan).
-> The Python SDK attribute is snake_case **`cursor_next`** (same as Verity471's SDK). Don't
-> mix the raw and SDK forms when porting. The terminal page returns a cursor but
-> `indicators = None`.
+> **`cursorNext` vs `cursor_next` — Titan is inconsistent with itself.** Through the **Python
+> SDK** the attribute is always `cursor_next`, on every stream and on both backends, so SDK
+> users never need to branch. On the **raw JSON wire**, Titan uses two different spellings
+> depending on the endpoint:
+>
+> | Raw JSON field | Titan stream endpoints |
+> |---|---|
+> | `cursorNext` | events, indicators, marketplace resources, marketplace vendors |
+> | `cursor_next` | credentials, credential sets, credential occurrences, accessed URLs, marketplace products |
+>
+> So "camelCase means Titan" is wrong for the credentials family. If you're parsing raw JSON
+> rather than using the SDK, read the field defensively —
+> `resp.get("cursorNext") or resp.get("cursor_next")` — or confirm the spelling for your
+> specific endpoint. Verified against the models in
+> [`titan-client-python`](https://github.com/intel471/titan-client-python/tree/main/titan_client/models)
+> (each model's `attribute_map`), 2026-09.
+>
+> The terminal page returns a cursor but `indicators = None`.
 
 ## 2. Non-stream endpoints — `count` + `offset`
 One page carries up to **100 records** (`count`), and you can page up to **11 pages** (max

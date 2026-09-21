@@ -12,10 +12,22 @@ index; read the linked reference for detail.**
 
 ## The common loop
 1. Load persisted state (cursor + frozen filters + first-run timestamp); bootstrap on first run.
-2. Pull pages at `size=1000`, replaying the **same filters** (including `from`) each call,
-   until a page comes back with **fewer items than `size`**.
+2. Pull pages, replaying the **same filters** (including `from`) each call, until the stream
+   signals it is drained.
 3. Ship each page; advance the persisted cursor **only after** a page fully ships.
-4. Persist the final cursor (from that last short page) for the next run.
+4. Persist the final cursor for the next run.
+
+**Steps 2 and 4 differ by backend** — don't copy one backend's termination check onto the other:
+
+| | Verity471 stream | Titan stream | Titan non-stream |
+|---|---|---|---|
+| Page size | `size` (1–1000, default 1000) | `count` (≤100) | `count` (≤100), `offset` ≤1000 |
+| Drained when | page has **fewer items than `size`** | items list comes back **`None`/absent** | fewer than `count` returned, or the offset cap is hit |
+| Resume token | `cursor_next` (persist it) | `cursorNext` (persist it) | **no cursor** — timestamp watermark, see [`titan-nonstream-replay-trap`](references/titan-nonstream-replay-trap.md) |
+
+Details per backend in `intel471-api-patterns` →
+[`verity-pagination`](../intel471-api-patterns/references/verity-pagination.md) /
+[`titan-pagination`](../intel471-api-patterns/references/titan-pagination.md).
 
 ## Topics
 - **State persistence per platform** (KV store / artifact store / control table / blob) →

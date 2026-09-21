@@ -18,10 +18,13 @@ At minimum: input/job name + account + backend. Two inputs on the same data type
 accounts or different filters are different streams and must not share a cursor.
 
 ## Notes & traps
-- **The cursor field name flips by backend.** On Titan the response key is `cursorNext`; on
-  Verity471 it is `cursor_next`. A connector that supports both has to branch on the selected
-  backend when reading the cursor out of the response. Same trap as the API-patterns
-  [`cursorNext` vs `cursor_next`](../../intel471-api-patterns/references/verity-pagination.md)
+- **Don't branch on backend to read the cursor — branch on whether you're parsing raw JSON.**
+  Through either Python SDK the attribute is `cursor_next` on both backends, so an SDK-based
+  connector needs no branch at all. Only raw-JSON clients see a difference, and it isn't a
+  clean backend split: Titan emits `cursorNext` on events/indicators/marketplace
+  resources+vendors but `cursor_next` on the credentials family, while Verity471 is
+  `cursor_next` throughout. Read it defensively. Details in the API-patterns
+  [`cursorNext` vs `cursor_next`](../../intel471-api-patterns/references/titan-pagination.md)
   note.
 - **Store the terminal cursor.** The final short page still returns a meaningful cursor — persist
   it as the next run's resume point (see

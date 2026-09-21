@@ -9,13 +9,23 @@ If you resume the next run from `lastUpdatedFrom = <last seen timestamp>`, you r
 record sharing that timestamp (dupes). If you resume from `<last timestamp> + 1`, you skip any
 record that shared the boundary timestamp but hadn't been fetched yet (gaps).
 
-## The pattern that works
+## The pattern that mostly works
 1. Sort ascending (`sort: "earliest"`), page with `count` + `offset`.
 2. Advance the stored watermark to **last-seen-timestamp + 1** between runs...
 3. ...**and** handle the boundary within a run: keep paging by `offset` while timestamps are
    equal, so you drain all records at the boundary timestamp before advancing the watermark.
    (This mirrors Titan's own "paging beyond the 1100 offset cap" workaround — see
    `intel471-api-patterns` → [`titan-pagination`](../../intel471-api-patterns/references/titan-pagination.md).)
+
+Two limits to be honest about:
+
+- **It cannot drain a boundary wider than the offset cap.** Step 3 pages with `offset`, which
+  tops out at 1000 (a 1100-record ceiling per filter set). If more than ~1100 records share the
+  boundary timestamp, you physically cannot reach them all before advancing, and the surplus is
+  lost. Rare at millisecond granularity, but not impossible on a bulk import.
+- **Sort field and filter field must be the same field.** Sorting by one timestamp while
+  filtering on another silently reintroduces gaps. Confirm the endpoint sorts on the same field
+  `lastUpdatedFrom` (or its equivalent) filters on.
 
 ## Worked examples
 - **Breach alerts:** the watermark is the last item's `activity.first` value, plus 1.

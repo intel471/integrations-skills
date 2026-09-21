@@ -139,16 +139,16 @@ code that calls the Intel 471 Titan or Verity471 APIs.
     return f".windsurf/rules/{skill['name']}.md", body
 
 
-def render_index(
-    skills: list[dict[str, str]], title: str, preamble: str, prefix: str = ""
-) -> str:
+def render_index(skills: list[dict[str, str]], title: str, preamble: str) -> str:
     """Render a repo-wide index file.
 
-    `prefix` is prepended to every relative link, so a file written into a subdirectory
-    (e.g. .github/copilot-instructions.md) still points at the repo root correctly.
+    Links are absolute GitHub URLs, matching the per-skill adapters. These files are meant to
+    be copied into someone else's repository, where a relative path would not resolve -- and
+    where we cannot know which directory they vendored the skills into.
     """
     rows = "\n".join(
-        f"- **[`{s['path']}`]({prefix}{s['path']})** — {s['description']}" for s in skills
+        f"- **[`{s['path']}`]({REPO_URL}/blob/main/{s['path']})** — {s['description']}"
+        for s in skills
     )
     return f"""<!-- {BANNER} -->
 
@@ -161,7 +161,8 @@ def render_index(
 Each skill is a lean index plus a `references/` directory. Read the index first, then open
 only the reference file for the topic at hand.
 
-Full detail, including the five highest-damage traps, is in [AGENTS.md]({prefix}AGENTS.md).
+Full detail, including the five highest-damage traps, is in
+[AGENTS.md]({REPO_URL}/blob/main/AGENTS.md).
 """
 
 
@@ -188,7 +189,7 @@ def main() -> int:
         "writing pagination, auth, or scheduled-connector logic."
     )
     outputs[".github/copilot-instructions.md"] = render_index(
-        skills, "Intel 471 integration skills", preamble, prefix="../"
+        skills, "Intel 471 integration skills", preamble
     )
     outputs["GEMINI.md"] = render_index(skills, "Intel 471 integration skills", preamble)
 

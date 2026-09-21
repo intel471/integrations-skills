@@ -22,9 +22,17 @@ is drained:
 Every response carries a `cursor_next` token. Pass it back as the `cursor` argument on the
 next call to get the following page.
 
-> ⚠️ **Do not confuse `cursor_next` with `cursorNext`.** The camelCase `cursorNext` is the
-> **Titan** API's stream field. Verity471's SDK uses snake_case `cursor_next`. Mixing them
-> up is a common copy-paste bug when porting code between the two backends.
+> ⚠️ **`cursor_next` vs `cursorNext`.** Verity471 uses snake_case `cursor_next` — both as the
+> SDK attribute and on the raw JSON wire. Titan's **SDK** attribute is also `cursor_next`, but
+> Titan's **raw JSON** uses `cursorNext` on some endpoints (events, indicators, marketplace
+> resources/vendors) and `cursor_next` on others (the credentials family, marketplace
+> products). So the two are only reliably distinguishable when you parse raw JSON, and even
+> then not by backend alone — see
+> [`titan-pagination`](titan-pagination.md).
+>
+> One more trap: several Verity471 SDK **docstrings** describe the response as carrying a
+> `cursorNext` field, but the models actually deserialize `cursor_next`. Trust the models, not
+> the docstrings.
 
 ## How to page
 
@@ -67,7 +75,7 @@ The same thing over raw HTTP — note that only `cursor` changes between the two
 
 ```
 GET /integrations/indicators/v1/indicators/stream?threat_type=malware&size=1000&from=1785542400000
-GET /integrations/indicators/v1/indicators/stream?threat_type=malware&size=1000&from=1785542400000&cursor=NTg2ZDYwOWUtNzhmMS00MDY5LTg3M2QtYTI5MWRjNzBhNTYyOjE3ODU1NjQ3ODIzNTY6ZWVkODFjMDNkMDIwYmM5ZWZmMmMwM2Q1YjM3OTZjMjczZjgyNTY5ZQ==
+GET /integrations/indicators/v1/indicators/stream?threat_type=malware&size=1000&from=1785542400000&cursor=MDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwOjE3ODU1NDI0MDAwMDA6MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMA==
 ```
 
 ## Known traps

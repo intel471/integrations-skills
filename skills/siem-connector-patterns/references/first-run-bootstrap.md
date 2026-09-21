@@ -23,8 +23,10 @@ On the very first run there's no persisted cursor, so the connector needs a **st
   it later, delete/reset the persisted state so the connector re-bootstraps.
 
 ## Traps
-- **Seconds vs milliseconds.** Verity wants epoch **milliseconds** (13 digits). A seconds value
-  bootstraps at 1970 and floods the pipeline. See `intel471-api-patterns` →
-  [`date-time-handling`](../../intel471-api-patterns/references/date-time-handling.md).
+- **Seconds vs milliseconds.** Verity wants epoch **milliseconds** (13 digits). A 10-digit
+  seconds value lands in January 1970 — and because bootstrap sets the **lower** bound, that
+  means the first run pulls the entire history and floods the pipeline, with no error to warn
+  you. (The same mistake on an upper bound returns nothing instead; see `intel471-api-patterns`
+  → [`date-time-handling`](../../intel471-api-patterns/references/date-time-handling.md).)
 - **The 60-second margin matters.** Bootstrapping at exactly "now" can miss records whose
   server-side timestamp is a hair behind the client clock. Back off a minute.

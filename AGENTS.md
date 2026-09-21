@@ -30,8 +30,9 @@ If you read nothing else:
 2. **`cursorNext` (Titan, raw JSON) vs `cursor_next` (both Python SDKs).** The single most common
    copy-paste bug when porting between backends.
    → [`titan-vs-verity-porting`](skills/intel471-api-patterns/references/titan-vs-verity-porting.md)
-3. **Epoch milliseconds, not seconds.** A 10-digit timestamp lands in 1970 and silently returns
-   nothing — no error.
+3. **Epoch milliseconds, not seconds.** A 10-digit timestamp silently lands in 1970 — no error.
+   On a lower bound (`from`) that means you get *everything*; on an upper bound (`until`),
+   *nothing*.
    → [`date-time-handling`](skills/intel471-api-patterns/references/date-time-handling.md)
 4. **Setting `until` on a stream closes it permanently.** Right for a bounded backfill; it makes
    a continuous connector go quiet forever after its first drain.
