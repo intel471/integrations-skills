@@ -1,5 +1,8 @@
 # Trap: Titan non-stream endpoints have no cursor
 
+> **Migration reference only.** Titan is being discontinued — don't build new software on it.
+> Use this to understand or port existing Titan code to Verity471.
+
 Some Titan endpoints used by connectors are **non-stream** and expose **no `cursorNext`** —
 e.g. `/v1/breachAlerts` and `/v1/cve/reports`. You page them by **timestamp**, and the naive
 approach skips or duplicates records across scheduled runs.

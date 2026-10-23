@@ -10,6 +10,9 @@ incrementally pulls a Titan/Verity471 stream and pushes into a destination, pers
 left off between runs**. The recurring architecture — and its footguns — live here. **Lean
 index; read the linked reference for detail.**
 
+> Titan is being discontinued: new connectors must target **Verity471**. The Titan columns and
+> traps below are for understanding and migrating existing Titan connectors.
+
 ## The common loop
 1. Load persisted state (cursor + frozen filters + first-run timestamp); bootstrap on first run.
 2. Pull pages, replaying the **same filters** (including `from`) each call, until the stream

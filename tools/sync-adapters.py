@@ -186,7 +186,8 @@ def main() -> int:
     preamble = (
         "This project follows the Intel 471 integration skills — patterns and traps for "
         "building against the Titan and Verity471 APIs. Consult the relevant skill before "
-        "writing pagination, auth, or scheduled-connector logic."
+        "writing pagination, auth, or scheduled-connector logic. Titan is being discontinued: "
+        "build new code on Verity471 only; the Titan material exists to support migration."
     )
     outputs[".github/copilot-instructions.md"] = render_index(
         skills, "Intel 471 integration skills", preamble
