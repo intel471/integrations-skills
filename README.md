@@ -11,6 +11,11 @@ results, and what breaks when you copy code between the two backends.
 Agent-agnostic and plain Markdown. Works with Claude Code, OpenAI Codex, Cursor, GitHub
 Copilot, Gemini CLI, Windsurf, and anything else that reads files.
 
+> **Titan is being discontinued.** Access to Titan (UI and API) will soon end. Build new
+> integrations on **Verity471**; the Titan content here exists to help you migrate existing
+> Titan integrations, not to start new ones. Your Customer Manager or Intel 471 support can
+> help with migration questions.
+
 ---
 
 ## Why bother

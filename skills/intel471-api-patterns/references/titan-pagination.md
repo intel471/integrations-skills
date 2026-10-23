@@ -1,5 +1,8 @@
 # Titan API — Pagination
 
+> **Migration reference only.** Titan is being discontinued — don't build new software on it.
+> Use this to understand or port existing Titan code to Verity471.
+
 Titan has **three** paging styles. (Verity471 has only one — cursor — see
 [`verity-pagination.md`](verity-pagination.md).) Pick by endpoint.
 

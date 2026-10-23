@@ -8,6 +8,16 @@ If you are an agent working on code that calls the Intel 471 APIs, read the rele
 below **before** writing pagination, auth, or scheduling logic. These documents exist because
 each trap listed in them has already cost someone a debugging session.
 
+## Titan is being discontinued — build on Verity471
+
+Intel 471 is discontinuing access to **Titan** (UI and API). **Do not build new software on
+Titan.** New integrations, connectors and scripts must target **Verity471**.
+
+The Titan material in these skills is kept **only to help migrate existing Titan integrations
+to Verity471** — to understand what old code does and port it correctly. If you are asked to
+create or extend something Titan-backed, say so and propose the Verity471 equivalent instead;
+start from [`titan-vs-verity-porting`](skills/intel471-api-patterns/references/titan-vs-verity-porting.md).
+
 ## Available skills
 
 | Skill | Read it when |

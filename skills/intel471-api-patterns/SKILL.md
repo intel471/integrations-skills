@@ -1,6 +1,6 @@
 ---
 name: intel471-api-patterns
-description: Patterns and traps for building integrations against the Intel 471 APIs — the Titan and Verity471 backends and their SDKs. Covers pagination, cursors, auth, rate limits, filtering, and known traps. Consult this whenever writing or debugging code that calls the Titan or Verity471 API/SDK, especially anything that pages through results (cursor / cursor_next / count+offset).
+description: Patterns and traps for building integrations against the Intel 471 APIs — the Titan and Verity471 backends and their SDKs. Covers pagination, cursors, auth, rate limits, filtering, and known traps. Consult this whenever writing or debugging code that calls the Titan or Verity471 API/SDK, especially anything that pages through results (cursor / cursor_next / count+offset). Titan is being discontinued — build new code on Verity471; the Titan material is for migrating existing integrations.
 ---
 
 # Intel 471 API Integration Patterns
@@ -9,8 +9,8 @@ Field-tested knowledge for calling the Intel 471 APIs. **This file is a lean ind
 
 ## Backends at a glance
 
-- **Titan** — the primary/original API. Three different paging styles coexist (cursor/stream, `count`+`offset`, and a hybrid count-offset-plus-timestamp workaround).
-- **Verity471** — a newer, stream-first subset of Titan. **Cursor-only** pagination.
+- **Verity471** — the current API, stream-first. **Cursor-only** pagination. **Target this for all new work.**
+- **Titan** — the original API, **being discontinued** (UI and API access will end). Three different paging styles coexist (cursor/stream, `count`+`offset`, and a hybrid count-offset-plus-timestamp workaround). Covered here **only to support migration** to Verity471 — don't build new Titan-backed software.
 
 ⚠️ Titan and Verity471 are **not** interchangeable. Field names and paging semantics differ (e.g. Titan streams expose `cursorNext`; the Verity471 SDK exposes `cursor_next`). Confirm which backend you're on before copying code between projects.
 
