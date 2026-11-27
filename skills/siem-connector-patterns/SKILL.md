@@ -1,6 +1,6 @@
 ---
 name: siem-connector-patterns
-description: Reusable architecture for scheduled Intel 471 → SIEM/platform connectors (Splunk, Rapid7 InsightConnect, Microsoft Sentinel, ServiceNow, and your own) — persisting a cursor + frozen filters between runs, incremental drain-until-short-page pulls, first-run bootstrap, page-level atomicity, and the Titan non-stream timestamp-replay trap. Consult when building or debugging any connector that pulls a Titan/Verity471 stream on a timer.
+description: Reusable architecture for scheduled Intel 471 → SIEM/platform connectors (Splunk, Rapid7 InsightConnect, Microsoft Sentinel, ServiceNow, and your own) — persisting a cursor + frozen filters between runs, incremental drain-until-short-page pulls, first-run bootstrap, page-level atomicity, the Titan non-stream timestamp-replay trap, and handling plaintext passwords (password_plain) from the compromised-credentials streams. Consult when building or debugging any connector that pulls a Titan/Verity471 stream on a timer.
 ---
 
 # Intel 471 → SIEM Connector Patterns
@@ -41,6 +41,9 @@ Details per backend in `intel471-api-patterns` →
   [`references/first-run-bootstrap.md`](references/first-run-bootstrap.md)
 - **Page atomicity & retry** →
   [`references/page-atomicity-and-retry.md`](references/page-atomicity-and-retry.md)
+- **Plaintext passwords** (`password_plain`: entitlement per affiliation group, opt-in storage
+  toggle off by default, keeping it out of logs/run history/raw payloads) →
+  [`references/plaintext-passwords.md`](references/plaintext-passwords.md)
 
 Cursor mechanics themselves are in the `intel471-api-patterns` skill
 ([`verity-pagination`](../intel471-api-patterns/references/verity-pagination.md),
